@@ -15,7 +15,7 @@ movie_url = "https://swapi.dev/api/films/"
 def list_movies():
     data = requests.get(movie_url).json()
     movies = [{"id": movie["episode_id"], "name": movie["title"]} for movie in data["results"]]
-    return jsonify(movies)
+    return jsonify(data["results"])
 
 @app.route("/sorted", methods=['GET'])
 def list_movies_sorted():
@@ -23,6 +23,14 @@ def list_movies_sorted():
     movies = [{"id": movie["episode_id"], "name": movie["title"]} for movie in data["results"]]
     movies.sort(key=lambda x: x["id"])
     return jsonify(movies)
+
+@app.route("/<id>", methods=['GET'])
+def list_movies_characters(id):
+    data = requests.get(movie_url).json()
+    movies = [{"id": movie["episode_id"], "characters": movie["characters"]} for movie in data["results"]]
+    movies.sort(key=lambda x: x["id"])
+    results = movies[int(id)-1]["characters"]
+    return jsonify(results)
 
 # if __name__ == "__main__":
 #     app.run(host="0.0.0.0", debug=True, port=port)
