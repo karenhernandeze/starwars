@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify
 import requests
+import asyncio
 
 print("Application startup")
 port = 3000
@@ -30,7 +31,18 @@ def list_movies_characters(id):
     movies = [{"id": movie["episode_id"], "characters": movie["characters"]} for movie in data["results"]]
     movies.sort(key=lambda x: x["id"])
     results = movies[int(id)-1]["characters"]
-    return jsonify(results)
+    character_names = []
+    for character in results:
+        name = requests.get(character).json()
+        character_names.append(name["name"])
+        # print(name)
+    # movie_id = request.args.get('id', default=1)
+    # response = requests.get(f'{movie_url}{movie_id}').json()
+    # character_urls = response['characters']
+    # character_list = asyncio.run(get_all_movie_character_names(character_urls))
+    # return jsonify({ 'movie_id': movie_id, 'title': response['title'], 'characters': character_list })
+
+    return jsonify(character_names)
 
 # if __name__ == "__main__":
 #     app.run(host="0.0.0.0", debug=True, port=port)
