@@ -35,12 +35,6 @@ def list_movies_characters(id):
     for character in results:
         name = requests.get(character).json()
         character_names.append(name["name"])
-        # print(name)
-    # movie_id = request.args.get('id', default=1)
-    # response = requests.get(f'{movie_url}{movie_id}').json()
-    # character_urls = response['characters']
-    # character_list = asyncio.run(get_all_movie_character_names(character_urls))
-    # return jsonify({ 'movie_id': movie_id, 'title': response['title'], 'characters': character_list })
 
     return jsonify(character_names)
 
